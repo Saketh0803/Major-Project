@@ -1,0 +1,15 @@
+clc
+clear all
+close all
+warning off
+load Classifier
+
+[filename, pathname] = uigetfile('*.*', 'Pick an Image');
+filename=strcat(pathname,filename);
+
+testImage = imread(filename);
+scaleTestImage = imresize(testImage, [256, 256]);
+featureTest =  extractHOGFeatures(scaleTestImage);
+[predictIndex,score] = predict(classifier,featureTest);
+figure;imshow(scaleTestImage);
+title(['predictImage: ', char(predictIndex)]);

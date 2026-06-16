@@ -1,0 +1,19 @@
+clc
+clear all
+close all
+warning off
+load Classifier
+
+imdsTest = imageDatastore('Testing_Dataset');
+
+numTest = length(imdsTest.Files);
+for i = 1:numTest
+	testImage = readimage(imdsTest,i);
+	scaleTestImage = imresize(testImage, [256, 256]);
+	featureTest =  extractHOGFeatures(scaleTestImage);
+	[predictIndex,score] = predict(classifier,featureTest);
+	figure;imshow(scaleTestImage);
+	title(['predictImage: ', char(predictIndex)]);
+    
+    predictedLabels(i,:) = predictIndex 
+end

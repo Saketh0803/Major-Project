@@ -1,0 +1,29 @@
+clc
+clear all
+close all
+warning off
+load Classifier
+
+TestingDataset = imageDatastore('Testing_Dataset','IncludeSubfolders',true,'LabelSource','foldernames');
+
+NumberOfTestingImages = length(TestingDataset.Files);
+ActualLabels = TestingDataset.Labels;
+
+ImageSize = [256, 256];
+
+for i = 1:NumberOfTestingImages
+    
+	TestImage = readimage(TestingDataset, i);
+	ScaledTestImage = imresize(TestImage, ImageSize);
+    
+	featureTest =  extractHOGFeatures(ScaledTestImage);    
+	PredictIndex= predict(classifier, featureTest);
+    
+% 	figure;
+%   imshow(ScaledTestImage);
+% 	title(['Image predicted as: ', char(PredictIndex)]);
+    
+    PredictedLabels(i,:) = PredictIndex; 
+end
+
+ConfusionMatrix = confusionmat(ActualLabels, PredictedLabels)

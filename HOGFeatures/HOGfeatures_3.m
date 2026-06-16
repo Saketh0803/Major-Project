@@ -1,0 +1,10 @@
+clear all;
+clc;
+I2 = imread('saketh.jpg');
+corners   = detectFASTFeatures(im2gray(I2));
+strongest = selectStrongest(corners,3);
+[hog2,validPoints,ptVis] = extractHOGFeatures(I2,strongest);
+figure;
+imshow(I2);
+hold on;
+plot(ptVis,'Color','red');

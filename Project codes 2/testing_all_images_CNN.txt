@@ -1,0 +1,14 @@
+Test = imageDatastore('Testing_Dataset');
+
+numTest = length(Test.Files);
+for i = 1:numTest
+	testImage = readimage(Test,i);
+	scaleTestImage = imresize(testImage, [227, 227]);
+	[Label, Prob] = classify(net, scaleTestImage);
+    
+    figure;
+    imshow(scaleTestImage);
+    title({char(Label), num2str(max(Prob),2)});
+    
+    c(i,:) = Label
+end

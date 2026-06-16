@@ -1,0 +1,37 @@
+TrainingDataset = imageDatastore('Training_Dataset',...
+                            'IncludeSubfolders',true,...
+                            'LabelSource','foldernames');
+                        
+% TestingDataset = imageDatastore('Testing_Dataset');
+    % Train_disp = countEachLabel(TrainingDataset);
+    % disp(TrainingDataset)
+    
+ImageSize = [256, 256];
+SampleImage = readimage(TrainingDataset,1);
+ScaledSampleImage = imresize(SampleImage, ImageSize);
+
+[features1, visualization] = extractHOGFeatures(SampleImage);
+imshow(SampleImage);
+hold on;
+plot(visualization);
+title('HOG Features of sampleImage');
+    figure;
+[features, visualization] = extractHOGFeatures(ScaledSampleImage);
+imshow(ScaledSampleImage);
+hold on;
+plot(visualization);
+title('HOG Features of scaledSampleImage');
+
+
+NumberOfTrainingImages = length(TrainingDataset.Files);
+TrainFeatures = zeros(NumberOfTrainingImages, size(features,2),'single');
+
+for i = 1:NumberOfTrainingImages
+    TrainImage = readimage(TrainingDataset, i);
+    TrainImage = imresize(TrainImage, ImageSize);
+    TrainFeatures(i,:) = extractHOGFeatures(TrainImage);
+end
+
+TrainingLabels = TrainingDataset.Labels;
+classifier = fitcecoc(TrainFeatures, TrainingLabels);
+save Classifier classifier;
