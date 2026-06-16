@@ -1,4 +1,4 @@
-# Automated Human Face Recognition System via Deep Transfer Learning
+# Human Face Recognition Using Machine Learning
 
 This repository contains an automated, high-precision computer vision pipeline that implements *Deep Transfer Learning* using an adapted *GoogLeNet (CNN)* architecture in MATLAB to perform robust biometric face identification and verification.
 
